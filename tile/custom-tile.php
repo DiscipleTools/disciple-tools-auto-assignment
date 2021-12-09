@@ -1,7 +1,7 @@
 <?php
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
-class Disciple_Tools_Plugin_Starter_Template_Tile
+class Disciple_Tools_Auto_Assignment_Tile
 {
     private static $_instance = null;
     public static function instance(){
@@ -28,8 +28,8 @@ class Disciple_Tools_Plugin_Starter_Template_Tile
      * @return mixed
      */
     public function dt_details_additional_tiles( $tiles, $post_type = "" ) {
-        if ( $post_type === "contacts" || $post_type === "starter_post_type" ){
-            $tiles["disciple_tools_plugin_starter_template"] = [ "label" => __( "Plugin Starter Template", 'disciple-tools-plugin-starter-template' ) ];
+        if ( $post_type === "contacts" || $post_type === "auto_assign_post_type" ){
+            $tiles["disciple_tools_auto_assignment"] = [ "label" => __( "Auto Assignment", 'disciple-tools-auto-assignment' ) ];
         }
         return $tiles;
     }
@@ -43,7 +43,7 @@ class Disciple_Tools_Plugin_Starter_Template_Tile
         /**
          * @todo set the post type
          */
-        if ( $post_type === "contacts" || $post_type === "starter_post_type" ){
+        if ( $post_type === "contacts" || $post_type === "auto_assign_post_type" ){
             /**
              * @todo Add the fields that you want to include in your tile.
              *
@@ -58,26 +58,26 @@ class Disciple_Tools_Plugin_Starter_Template_Tile
             /**
              * This is an example of a text field
              */
-            $fields['disciple_tools_plugin_starter_template_text'] = [
-                'name'        => __( 'Text', 'disciple-tools-plugin-starter-template' ),
-                'description' => _x( 'Text', 'Optional Documentation', 'disciple-tools-plugin-starter-template' ),
+            $fields['disciple_tools_auto_assignment_text'] = [
+                'name'        => __( 'Text', 'disciple-tools-auto-assignment' ),
+                'description' => _x( 'Text', 'Optional Documentation', 'disciple-tools-auto-assignment' ),
                 'type'        => 'text',
                 'default'     => '',
-                'tile' => 'disciple_tools_plugin_starter_template',
+                'tile' => 'disciple_tools_auto_assignment',
                 'icon' => get_template_directory_uri() . '/dt-assets/images/edit.svg',
             ];
             /**
              * This is an example of a multiselect field
              */
-            $fields["disciple_tools_plugin_starter_template_multiselect"] = [
-                "name" => __( 'Multiselect', 'disciple-tools-plugin-starter-template' ),
+            $fields["disciple_tools_auto_assignment_multiselect"] = [
+                "name" => __( 'Multiselect', 'disciple-tools-auto-assignment' ),
                 "default" => [
-                    "one" => [ "label" => __( "One", 'disciple-tools-plugin-starter-template' ) ],
-                    "two" => [ "label" => __( "Two", 'disciple-tools-plugin-starter-template' ) ],
-                    "three" => [ "label" => __( "Three", 'disciple-tools-plugin-starter-template' ) ],
-                    "four" => [ "label" => __( "Four", 'disciple-tools-plugin-starter-template' ) ],
+                    "one" => [ "label" => __( "One", 'disciple-tools-auto-assignment' ) ],
+                    "two" => [ "label" => __( "Two", 'disciple-tools-auto-assignment' ) ],
+                    "three" => [ "label" => __( "Three", 'disciple-tools-auto-assignment' ) ],
+                    "four" => [ "label" => __( "Four", 'disciple-tools-auto-assignment' ) ],
                 ],
-                "tile" => "disciple_tools_plugin_starter_template",
+                "tile" => "disciple_tools_auto_assignment",
                 "type" => "multi_select",
                 "hidden" => false,
                 'icon' => get_template_directory_uri() . '/dt-assets/images/edit.svg',
@@ -85,24 +85,24 @@ class Disciple_Tools_Plugin_Starter_Template_Tile
             /**
              * This is an example of a key select field
              */
-            $fields["disciple_tools_plugin_starter_template_keyselect"] = [
+            $fields["disciple_tools_auto_assignment_keyselect"] = [
                 'name' => "Key Select",
                 'type' => 'key_select',
-                "tile" => "disciple_tools_plugin_starter_template",
+                "tile" => "disciple_tools_auto_assignment",
                 'default' => [
                     'first'   => [
-                        "label" => _x( 'First', 'Key Select Label', 'disciple-tools-plugin-starter-template' ),
-                        "description" => _x( "First Key Description", "Training Status field description", 'disciple-tools-plugin-starter-template' ),
+                        "label" => _x( 'First', 'Key Select Label', 'disciple-tools-auto-assignment' ),
+                        "description" => _x( "First Key Description", "Training Status field description", 'disciple-tools-auto-assignment' ),
                         'color' => "#ff9800"
                     ],
                     'second'   => [
-                        "label" => _x( 'Second', 'Key Select Label', 'disciple-tools-plugin-starter-template' ),
-                        "description" => _x( "Second Key Description", "Training Status field description", 'disciple-tools-plugin-starter-template' ),
+                        "label" => _x( 'Second', 'Key Select Label', 'disciple-tools-auto-assignment' ),
+                        "description" => _x( "Second Key Description", "Training Status field description", 'disciple-tools-auto-assignment' ),
                         'color' => "#4CAF50"
                     ],
                     'third'   => [
-                        "label" => _x( 'Third', 'Key Select Label', 'disciple-tools-plugin-starter-template' ),
-                        "description" => _x( "Third Key Description", "Training Status field description", 'disciple-tools-plugin-starter-template' ),
+                        "label" => _x( 'Third', 'Key Select Label', 'disciple-tools-auto-assignment' ),
+                        "description" => _x( "Third Key Description", "Training Status field description", 'disciple-tools-auto-assignment' ),
                         'color' => "#366184"
                     ],
                 ],
@@ -118,7 +118,7 @@ class Disciple_Tools_Plugin_Starter_Template_Tile
         /**
          * @todo set the post type and the section key that you created in the dt_details_additional_tiles() function
          */
-        if ( ( $post_type === "contacts" || $post_type === "starter_post_type" ) && $section === "disciple_tools_plugin_starter_template" ){
+        if ( ( $post_type === "contacts" || $post_type === "auto_assign_post_type" ) && $section === "disciple_tools_auto_assignment" ){
             /**
              * These are two sets of key data:
              * $this_post is the details for this specific post
@@ -143,4 +143,4 @@ class Disciple_Tools_Plugin_Starter_Template_Tile
         <?php }
     }
 }
-Disciple_Tools_Plugin_Starter_Template_Tile::instance();
+Disciple_Tools_Auto_Assignment_Tile::instance();

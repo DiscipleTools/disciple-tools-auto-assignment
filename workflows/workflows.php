@@ -5,14 +5,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 } // Exit if accessed directly
 
 /**
- * Class Disciple_Tools_Plugin_Starter_Template_Workflows
+ * Class Disciple_Tools_Auto_Assignment_Workflows
  *
  * @since  1.11.0
  */
-class Disciple_Tools_Plugin_Starter_Template_Workflows {
+class Disciple_Tools_Auto_Assignment_Workflows {
+
+    private static $custom_action_auto_assign_contacts = [
+        'id'    => 'contacts_00001_custom_action_auto_assign',
+        'label' => 'Auto-Assign Contacts'
+    ];
 
     /**
-     * Disciple_Tools_Plugin_Starter_Template_Workflows The single instance of Disciple_Tools_Plugin_Starter_Template_Workflows.
+     * Disciple_Tools_Auto_Assignment_Workflows The single instance of Disciple_Tools_Auto_Assignment_Workflows.
      *
      * @var    object
      * @access private
@@ -21,11 +26,11 @@ class Disciple_Tools_Plugin_Starter_Template_Workflows {
     private static $_instance = null;
 
     /**
-     * Main Disciple_Tools_Plugin_Starter_Template_Workflows Instance
+     * Main Disciple_Tools_Auto_Assignment_Workflows Instance
      *
-     * Ensures only one instance of Disciple_Tools_Plugin_Starter_Template_Workflows is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Auto_Assignment_Workflows is loaded or can be loaded.
      *
-     * @return Disciple_Tools_Plugin_Starter_Template_Workflows instance
+     * @return Disciple_Tools_Auto_Assignment_Workflows instance
      * @since  1.11.0
      */
     public static function instance() {
@@ -37,10 +42,24 @@ class Disciple_Tools_Plugin_Starter_Template_Workflows {
     }
 
     /**
-     * Disciple_Tools_Plugin_Starter_Template_Workflows constructor.
+     * Disciple_Tools_Auto_Assignment_Workflows constructor.
      */
     public function __construct() {
         add_filter( 'dt_workflows', [ $this, 'fetch_default_workflows_filter' ], 10, 2 );
+        add_filter( 'dt_workflows_custom_actions', function ( $actions ) {
+            $actions[] = (object) [
+                'id'        => self::$custom_action_auto_assign_contacts['id'],
+                'name'      => self::$custom_action_auto_assign_contacts['label'],
+                'displayed' => true // Within admin workflow builder view?
+            ];
+
+            return $actions;
+        }, 10, 1 );
+
+        add_action( self::$custom_action_auto_assign_contacts['id'], [
+            $this,
+            'custom_action_auto_assign_contacts'
+        ], 10, 3 );
     }
 
     public function fetch_default_workflows_filter( $workflows, $post_type ) {
@@ -61,33 +80,24 @@ class Disciple_Tools_Plugin_Starter_Template_Workflows {
             case 'groups':
                 $this->build_default_workflows_groups( $workflows );
                 break;
-            case 'starter_post_type':
-                $this->build_default_workflows_starter( $workflows );
-                break;
         }
 
         return $workflows;
     }
 
     private function build_default_workflows_contacts( &$workflows ) {
-    }
-
-    private function build_default_workflows_groups( &$workflows ) {
-    }
-
-    private function build_default_workflows_starter( &$workflows ) {
-        $dt_fields = DT_Posts::get_post_field_settings( 'starter_post_type' );
+        $dt_fields = DT_Posts::get_post_field_settings( 'contacts' );
 
         $workflows[] = (object) [
-            'id'         => 'starter_00001',
-            'name'       => 'Starter Template Add Text On Creation',
-            'enabled'    => false, // Can be enabled via admin view
+            'id'         => 'contacts_00001',
+            'name'       => self::$custom_action_auto_assign_contacts['label'],
+            'enabled'    => true, // Can be enabled/disabled via admin view
             'trigger'    => Disciple_Tools_Workflows_Defaults::$trigger_created['id'],
             'conditions' => [
                 Disciple_Tools_Workflows_Defaults::new_condition( Disciple_Tools_Workflows_Defaults::$condition_is_set,
                     [
-                        'id'    => 'name',
-                        'label' => $dt_fields['name']['name']
+                        'id'    => 'sources',
+                        'label' => $dt_fields['sources']['name']
                     ], [
                         'id'    => '',
                         'label' => ''
@@ -95,18 +105,58 @@ class Disciple_Tools_Plugin_Starter_Template_Workflows {
                 )
             ],
             'actions'    => [
-                Disciple_Tools_Workflows_Defaults::new_action( Disciple_Tools_Workflows_Defaults::$action_update,
+                Disciple_Tools_Workflows_Defaults::new_action( Disciple_Tools_Workflows_Defaults::$action_custom,
                     [
-                        'id'    => 'disciple_tools_plugin_starter_template_text',
-                        'label' => $dt_fields['disciple_tools_plugin_starter_template_text']['name']
+                        'id'    => 'assigned_to', // Field to be updated or an arbitrary selection!
+                        'label' => $dt_fields['assigned_to']['name']
                     ], [
-                        'id'    => 'Auto Filled By Workflow Engine',
-                        'label' => 'Auto Filled By Workflow Engine'
+                        'id'    => self::$custom_action_auto_assign_contacts['id'], // Action Hook
+                        'label' => self::$custom_action_auto_assign_contacts['label']
                     ]
                 )
             ]
         ];
     }
+
+    private function build_default_workflows_groups( &$workflows ) {
+    }
+
+    /**
+     * Workflow custom action self-contained function to handle following
+     * use case:
+     *
+     * Auto-assigning of new contacts to the relevant multiplier, based on
+     * location, age, gender and/or language.
+     *
+     * @param post
+     * @param field
+     * @param value
+     *
+     * @access public
+     * @since  1.11.0
+     */
+    public function custom_action_auto_assign_contacts( $post, $field, $value ) {
+        if ( ! empty( $post ) && isset( $post['sources'] ) && self::sources_match( $post['sources'] ) ) {
+            Disciple_Tools_Auto_Assignment_API::auto_assign( $post );
+        }
+    }
+
+    private function sources_match( $sources ): bool {
+        $matched = false;
+        foreach ( $sources ?? [] as $source ) {
+            if ( in_array( strtolower( trim( $source ) ), [
+                'echo',
+                'mailchimp',
+                'web',
+                'facebook',
+                'twitter'
+            ] ) ) {
+                $matched = true;
+            }
+        }
+
+        return $matched;
+    }
 }
 
-Disciple_Tools_Plugin_Starter_Template_Workflows::instance();
+Disciple_Tools_Auto_Assignment_Workflows::instance();

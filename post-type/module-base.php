@@ -2,22 +2,22 @@
 if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
 
 /**
- * Class Disciple_Tools_Plugin_Starter_Template_Base
+ * Class Disciple_Tools_Auto_Assignment_Base
  * Load the core post type hooks into the Disciple.Tools system
  */
-class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
+class Disciple_Tools_Auto_Assignment_Base extends DT_Module_Base {
 
     /**
      * Define post type variables
      * @todo update these variables with your post_type, module key, and names.
      * @var string
      */
-    public $post_type = "starter_post_type";
-    public $module = "starter_base";
-    public $single_name = 'Starter';
-    public $plural_name = 'Starters';
+    public $post_type = "auto_assign_post_type";
+    public $module = "auto_assign_base";
+    public $single_name = 'Auto Assignment';
+    public $plural_name = 'Auto Assignments';
     public static function post_type(){
-        return 'starter_post_type';
+        return 'auto_assign_post_type';
     }
 
     private static $_instance = null;
@@ -74,7 +74,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
         if ( !isset( $expected_roles["multiplier"] ) ){
             $expected_roles["multiplier"] = [
 
-                "label" => __( 'Multiplier', 'disciple-tools-plugin-starter-template' ),
+                "label" => __( 'Multiplier', 'disciple-tools-auto-assignment' ),
                 "description" => "Interacts with Contacts and Groups",
                 "permissions" => []
             ];
@@ -116,18 +116,18 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
              * @todo modify strings and add elements to default array
              */
             $fields['status'] = [
-                'name'        => __( 'Status', 'disciple-tools-plugin-starter-template' ),
-                'description' => __( 'Set the current status.', 'disciple-tools-plugin-starter-template' ),
+                'name'        => __( 'Status', 'disciple-tools-auto-assignment' ),
+                'description' => __( 'Set the current status.', 'disciple-tools-auto-assignment' ),
                 'type'        => 'key_select',
                 'default'     => [
                     'inactive' => [
-                        'label' => __( 'Inactive', 'disciple-tools-plugin-starter-template' ),
-                        'description' => __( 'No longer active.', 'disciple-tools-plugin-starter-template' ),
+                        'label' => __( 'Inactive', 'disciple-tools-auto-assignment' ),
+                        'description' => __( 'No longer active.', 'disciple-tools-auto-assignment' ),
                         'color' => "#F43636"
                     ],
                     'active'   => [
-                        'label' => __( 'Active', 'disciple-tools-plugin-starter-template' ),
-                        'description' => __( 'Is active.', 'disciple-tools-plugin-starter-template' ),
+                        'label' => __( 'Active', 'disciple-tools-auto-assignment' ),
+                        'description' => __( 'Is active.', 'disciple-tools-auto-assignment' ),
                         'color' => "#4CAF50"
                     ],
                 ],
@@ -137,8 +137,8 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 "show_in_table" => 10,
             ];
             $fields['assigned_to'] = [
-                'name'        => __( 'Assigned To', 'disciple-tools-plugin-starter-template' ),
-                'description' => __( "Select the main person who is responsible for reporting on this record.", 'disciple-tools-plugin-starter-template' ),
+                'name'        => __( 'Assigned To', 'disciple-tools-auto-assignment' ),
+                'description' => __( "Select the main person who is responsible for reporting on this record.", 'disciple-tools-auto-assignment' ),
                 'type'        => 'user_select',
                 'default'     => '',
                 'tile' => 'status',
@@ -152,7 +152,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
              * Common and recommended fields
              */
             $fields['start_date'] = [
-                'name'        => __( 'Start Date', 'disciple-tools-plugin-starter-template' ),
+                'name'        => __( 'Start Date', 'disciple-tools-auto-assignment' ),
                 'description' => '',
                 'type'        => 'date',
                 'default'     => time(),
@@ -160,7 +160,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/date-start.svg',
             ];
             $fields['end_date'] = [
-                'name'        => __( 'End Date', 'disciple-tools-plugin-starter-template' ),
+                'name'        => __( 'End Date', 'disciple-tools-auto-assignment' ),
                 'description' => '',
                 'type'        => 'date',
                 'default'     => '',
@@ -168,21 +168,21 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 'icon' => get_template_directory_uri() . '/dt-assets/images/date-end.svg',
             ];
             $fields["multi_select"] = [
-                'name' => __( 'Multi-Select', 'disciple-tools-plugin-starter-template' ),
-                'description' => __( "Multi Select Field", 'disciple-tools-plugin-starter-template' ),
+                'name' => __( 'Multi-Select', 'disciple-tools-auto-assignment' ),
+                'description' => __( "Multi Select Field", 'disciple-tools-auto-assignment' ),
                 'type' => 'multi_select',
                 'default' => [
                     'item_1' => [
-                        'label' => __( 'Item 1', 'disciple-tools-plugin-starter-template' ),
-                        'description' => __( 'Item 1.', 'disciple-tools-plugin-starter-template' ),
+                        'label' => __( 'Item 1', 'disciple-tools-auto-assignment' ),
+                        'description' => __( 'Item 1.', 'disciple-tools-auto-assignment' ),
                     ],
                     'item_2' => [
-                        'label' => __( 'Item 2', 'disciple-tools-plugin-starter-template' ),
-                        'description' => __( 'Item 2.', 'disciple-tools-plugin-starter-template' ),
+                        'label' => __( 'Item 2', 'disciple-tools-auto-assignment' ),
+                        'description' => __( 'Item 2.', 'disciple-tools-auto-assignment' ),
                     ],
                     'item_3' => [
-                        'label' => __( 'Item 3', 'disciple-tools-plugin-starter-template' ),
-                        'description' => __( 'Item 3.', 'disciple-tools-plugin-starter-template' ),
+                        'label' => __( 'Item 3', 'disciple-tools-auto-assignment' ),
+                        'description' => __( 'Item 3.', 'disciple-tools-auto-assignment' ),
                     ],
                 ],
                 "tile" => "details",
@@ -196,8 +196,8 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
              * location elements
              */
             $fields['location_grid'] = [
-                'name'        => __( 'Locations', 'disciple-tools-plugin-starter-template' ),
-                'description' => __( 'The general location where this contact is located.', 'disciple-tools-plugin-starter-template' ),
+                'name'        => __( 'Locations', 'disciple-tools-auto-assignment' ),
+                'description' => __( 'The general location where this contact is located.', 'disciple-tools-auto-assignment' ),
                 'type'        => 'location',
                 'mapbox'    => false,
                 "in_create_form" => true,
@@ -205,8 +205,8 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg",
             ];
             $fields['location_grid_meta'] = [
-                'name'        => __( 'Locations', 'disciple-tools-plugin-starter-template' ), //system string does not need translation
-                'description' => __( 'The general location where this record is located.', 'disciple-tools-plugin-starter-template' ),
+                'name'        => __( 'Locations', 'disciple-tools-auto-assignment' ), //system string does not need translation
+                'description' => __( 'The general location where this record is located.', 'disciple-tools-auto-assignment' ),
                 'type'        => 'location_meta',
                 "tile"      => "details",
                 'mapbox'    => false,
@@ -214,7 +214,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 "icon" => get_template_directory_uri() . "/dt-assets/images/location.svg?v=2",
             ];
             $fields["contact_address"] = [
-                "name" => __( 'Address', 'disciple-tools-plugin-starter-template' ),
+                "name" => __( 'Address', 'disciple-tools-auto-assignment' ),
                 "icon" => get_template_directory_uri() . "/dt-assets/images/house.svg",
                 "type" => "communication_channel",
                 "tile" => "details",
@@ -237,7 +237,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
              * generation and peer connection fields
              */
             $fields["parents"] = [
-                "name" => __( 'Parents', 'disciple-tools-plugin-starter-template' ),
+                "name" => __( 'Parents', 'disciple-tools-auto-assignment' ),
                 'description' => '',
                 "type" => "connection",
                 "post_type" => $this->post_type,
@@ -248,7 +248,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
             ];
             $fields["peers"] = [
-                "name" => __( 'Peers', 'disciple-tools-plugin-starter-template' ),
+                "name" => __( 'Peers', 'disciple-tools-auto-assignment' ),
                 'description' => '',
                 "type" => "connection",
                 "post_type" => $this->post_type,
@@ -259,7 +259,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 'create-icon' => get_template_directory_uri() . '/dt-assets/images/add-group.svg',
             ];
             $fields["children"] = [
-                "name" => __( 'Children', 'disciple-tools-plugin-starter-template' ),
+                "name" => __( 'Children', 'disciple-tools-auto-assignment' ),
                 'description' => '',
                 "type" => "connection",
                 "post_type" => $this->post_type,
@@ -276,8 +276,8 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
              * Connections to other post types
              */
             $fields["peoplegroups"] = [
-                "name" => __( 'People Groups', 'disciple-tools-plugin-starter-template' ),
-                'description' => __( 'The people groups connected to this record.', 'disciple-tools-plugin-starter-template' ),
+                "name" => __( 'People Groups', 'disciple-tools-auto-assignment' ),
+                'description' => __( 'The people groups connected to this record.', 'disciple-tools-auto-assignment' ),
                 "type" => "connection",
                 "post_type" => $this->post_type,
                 "p2p_direction" => "to",
@@ -286,7 +286,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
             ];
 
             $fields['contacts'] = [
-                "name" => __( 'Contacts', 'disciple-tools-plugin-starter-template' ),
+                "name" => __( 'Contacts', 'disciple-tools-auto-assignment' ),
                 "description" => '',
                 "type" => "connection",
                 "post_type" => "contacts",
@@ -343,8 +343,8 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
      */
     public function dt_details_additional_tiles( $tiles, $post_type = "" ){
         if ( $post_type === $this->post_type ){
-            $tiles["connections"] = [ "label" => __( "Connections", 'disciple-tools-plugin-starter-template' ) ];
-            $tiles["other"] = [ "label" => __( "Other", 'disciple-tools-plugin-starter-template' ) ];
+            $tiles["connections"] = [ "label" => __( "Connections", 'disciple-tools-auto-assignment' ) ];
+            $tiles["other"] = [ "label" => __( "Other", 'disciple-tools-auto-assignment' ) ];
         }
         return $tiles;
     }
@@ -361,7 +361,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
             $post = DT_Posts::get_post( $this->post_type, get_the_ID() );
             ?>
             <div class="section-subheader">
-                <?php esc_html_e( "Custom Section Contact", 'disciple-tools-plugin-starter-template' ) ?>
+                <?php esc_html_e( "Custom Section Contact", 'disciple-tools-auto-assignment' ) ?>
             </div>
             <div>
                 <p>Add information or custom fields here</p>
@@ -517,7 +517,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
 
             $filters["tabs"][] = [
                 "key" => "assigned_to_me",
-                "label" => __( "Assigned to me", 'disciple-tools-plugin-starter-template' ),
+                "label" => __( "Assigned to me", 'disciple-tools-auto-assignment' ),
                 "count" => $total_my,
                 "order" => 20
             ];
@@ -525,7 +525,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
             $filters["filters"][] = [
                 'ID' => 'my_all',
                 'tab' => 'assigned_to_me',
-                'name' => __( "All", 'disciple-tools-plugin-starter-template' ),
+                'name' => __( "All", 'disciple-tools-auto-assignment' ),
                 'query' => [
                     'assigned_to' => [ 'me' ],
                     'sort' => 'status'
@@ -582,7 +582,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 }
                 $filters["tabs"][] = [
                     "key" => "all",
-                    "label" => __( "All", 'disciple-tools-plugin-starter-template' ),
+                    "label" => __( "All", 'disciple-tools-auto-assignment' ),
                     "count" => $total_all,
                     "order" => 10
                 ];
@@ -590,7 +590,7 @@ class Disciple_Tools_Plugin_Starter_Template_Base extends DT_Module_Base {
                 $filters["filters"][] = [
                     'ID' => 'all',
                     'tab' => 'all',
-                    'name' => __( "All", 'disciple-tools-plugin-starter-template' ),
+                    'name' => __( "All", 'disciple-tools-auto-assignment' ),
                     'query' => [
                         'sort' => '-post_date'
                     ],

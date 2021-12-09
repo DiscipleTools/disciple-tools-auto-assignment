@@ -3,10 +3,10 @@
 class PluginTest extends TestCase
 {
     public function test_plugin_installed() {
-        activate_plugin( 'disciple-tools-plugin-starter-template/disciple-tools-plugin-starter-template.php' );
+        activate_plugin( 'disciple-tools-auto-assignment/disciple-tools-auto-assignment.php' );
 
         $this->assertContains(
-            'disciple-tools-plugin-starter-template/disciple-tools-plugin-starter-template.php',
+            'disciple-tools-auto-assignment/disciple-tools-auto-assignment.php',
             get_option( 'active_plugins' )
         );
     }

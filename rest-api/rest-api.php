@@ -1,15 +1,40 @@
 <?php
-if ( !defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly.
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+} // Exit if accessed directly.
 
-class Disciple_Tools_Plugin_Starter_Template_Endpoints
-{
+class Disciple_Tools_Auto_Assignment_Endpoints {
     /**
      * @todo Set the permissions your endpoint needs
      * @link https://github.com/DiscipleTools/Documentation/blob/master/theme-core/capabilities.md
      * @var string[]
      */
-    public $permissions = [ 'access_contacts', 'dt_all_access_contacts', 'view_project_metrics' ];
+    public $permissions = [ 'manage_dt' ];
 
+    private static $_instance = null;
+
+    public static function instance() {
+        if ( is_null( self::$_instance ) ) {
+            self::$_instance = new self();
+        }
+
+        return self::$_instance;
+    } // End instance()
+
+    public function __construct() {
+        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
+    }
+
+    public function has_permission() {
+        $pass = false;
+        foreach ( $this->permissions as $permission ) {
+            if ( current_user_can( $permission ) ) {
+                $pass = true;
+            }
+        }
+
+        return $pass;
+    }
 
     /**
      * @todo define the name of the $namespace
@@ -19,45 +44,82 @@ class Disciple_Tools_Plugin_Starter_Template_Endpoints
      */
     //See https://github.com/DiscipleTools/disciple-tools-theme/wiki/Site-to-Site-Link for outside of wordpress authentication
     public function add_api_routes() {
-        $namespace = 'disciple-tools-plugin-starter-template/v1';
+        $namespace = 'disciple_tools_auto_assignment/v1';
 
         register_rest_route(
-            $namespace, '/endpoint', [
-                'methods'  => "GET",
-                'callback' => [ $this, 'endpoint' ],
-                'permission_callback' => function( WP_REST_Request $request ) {
+            $namespace, '/load', [
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => [ $this, 'load' ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
+                    return $this->has_permission();
+                },
+            ]
+        );
+        register_rest_route(
+            $namespace, '/save', [
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => [ $this, 'save' ],
+                'permission_callback' => function ( WP_REST_Request $request ) {
                     return $this->has_permission();
                 },
             ]
         );
     }
 
+    public function load( WP_REST_Request $request ): array {
 
-    public function endpoint( WP_REST_Request $request ) {
+        // Prepare response payload
+        $response = [];
 
-        // @todo run your function here
+        $params = $request->get_params();
+        if ( isset( $params['action'] ) ) {
 
-        return true;
-    }
+            // Execute accordingly, based on specified action
+            switch ( $params['action'] ) {
+                case 'general':
+                    $response['has_settings'] = Disciple_Tools_Auto_Assignment_API::option_exists( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings );
+                    $response['settings']     = Disciple_Tools_Auto_Assignment_API::fetch_option( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings );
 
-    private static $_instance = null;
-    public static function instance() {
-        if ( is_null( self::$_instance ) ) {
-            self::$_instance = new self();
-        }
-        return self::$_instance;
-    } // End instance()
-    public function __construct() {
-        add_action( 'rest_api_init', [ $this, 'add_api_routes' ] );
-    }
-    public function has_permission(){
-        $pass = false;
-        foreach ( $this->permissions as $permission ){
-            if ( current_user_can( $permission ) ){
-                $pass = true;
+                    $response['success'] = true;
+                    break;
+                default:
+                    $response['success'] = false;
+                    break;
             }
+
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'Unable to execute action, due to missing parameters.';
         }
-        return $pass;
+
+        return $response;
+    }
+
+    public function save( WP_REST_Request $request ): array {
+
+        // Prepare response payload
+        $response = [];
+
+        $params = $request->get_params();
+        if ( isset( $params['action'], $params['data'] ) ) {
+
+            // Execute accordingly, based on specified action
+            switch ( $params['action'] ) {
+                case 'general':
+                    Disciple_Tools_Auto_Assignment_API::update_option( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings, json_encode( $params['data'] ) );
+                    break;
+                default:
+                    break;
+            }
+            $response['success'] = true;
+
+        } else {
+            $response['success'] = false;
+            $response['message'] = 'Unable to execute action, due to missing parameters.';
+        }
+
+        return $response;
     }
 }
-Disciple_Tools_Plugin_Starter_Template_Endpoints::instance();
+
+Disciple_Tools_Auto_Assignment_Endpoints::instance();
