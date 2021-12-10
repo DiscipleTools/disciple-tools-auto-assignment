@@ -86,7 +86,6 @@ class Disciple_Tools_Auto_Assignment_Endpoints {
                     $response['success'] = false;
                     break;
             }
-
         } else {
             $response['success'] = false;
             $response['message'] = 'Unable to execute action, due to missing parameters.';

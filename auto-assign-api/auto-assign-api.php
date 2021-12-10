@@ -120,8 +120,7 @@ class Disciple_Tools_Auto_Assignment_API {
         $gender_query = $wpdb->get_results( $wpdb->prepare( "
             SELECT user_id, meta_value as gender
             from $wpdb->usermeta
-            WHERE meta_key = %s", "{$wpdb->prefix}user_gender" ),
-            ARRAY_A );
+            WHERE meta_key = %s", "{$wpdb->prefix}user_gender" ), ARRAY_A );
 
         foreach ( $gender_query as $data ) {
             $gender_data[ $data["user_id"] ] = $data["gender"];

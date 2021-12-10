@@ -159,8 +159,7 @@ class Disciple_Tools_Auto_Assignment {
         /**
          * Auto assignment related classes
          */
-        require_once('auto-assign-api/auto-assign-api.php');
-
+        require_once( 'auto-assign-api/auto-assign-api.php' );
     }
 
     /**
