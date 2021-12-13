@@ -13,6 +13,8 @@ class Disciple_Tools_Auto_Assignment_API {
     public static $weights_gender = 1.0;
     public static $weights_location = 1.0;
     public static $weights_language = 1.0;
+    public static $weights_user_status = 1.0;
+    public static $weights_workload_status = 1.0;
 
     public static function fetch_endpoint_save_options_url(): string {
         return trailingslashit( site_url() ) . 'wp-json/disciple_tools_auto_assignment/v1/save';
@@ -95,6 +97,18 @@ class Disciple_Tools_Auto_Assignment_API {
                 // Languages
                 $u['languages'] = self::fetch_user_languages( $user['ID'] ) ?? [];
 
+                // Assigned To Count
+                $u['assigned_to_count'] = isset( $user['number_assigned_to'] ) ? intval( $user['number_assigned_to'] ) : 0;
+
+                // User Status
+                $u['user_status'] = $user['user_status'] ?? '';
+
+                // Workload Status
+                $u['workload_status'] = $user['workload_status'] ?? '';
+
+                // Last Assignment
+                $u['last_assigned'] = self::fetch_user_last_assigned_ts( $user['ID'] );
+
                 $multipliers[] = $u;
             }
         }
@@ -111,6 +125,21 @@ class Disciple_Tools_Auto_Assignment_API {
         }
 
         return $location_ids;
+    }
+
+    private static function fetch_user_last_assigned_ts( $user_id ): int {
+        global $wpdb;
+
+        $last_assigned_ts = $wpdb->get_var( $wpdb->prepare( "
+    SELECT hist_time
+    FROM $wpdb->dt_activity_log
+    WHERE meta_key = 'assigned_to'
+    AND meta_value = %s
+    AND user_id != %d
+    ORDER BY hist_time DESC
+    LIMIT 1", 'user-' . $user_id, $user_id ) );
+
+        return ! empty( $last_assigned_ts ) ? intval( $last_assigned_ts ) : 0;
     }
 
     private static function fetch_user_genders(): array {
@@ -195,11 +224,13 @@ class Disciple_Tools_Auto_Assignment_API {
     }
 
     private static function apply_weights( $contact, $multipliers, $enforce_gender, $enforce_location, $enforce_language ): array {
-        $ranked_multipliers = [];
+        $ranked_multipliers        = [];
+        $ranked_assigned_to_counts = self::rank_assigned_to_counts( $multipliers );
         foreach ( $multipliers ?? [] as $multiplier ) {
 
             $weight = 0.0;
 
+            // Gender
             if ( $enforce_gender ) {
                 if ( isset( $multiplier['gender'], $contact['gender']['key'] ) ) {
                     if ( strtolower( trim( $multiplier['gender'] ) ) === strtolower( trim( $contact['gender']['key'] ) ) ) {
@@ -208,6 +239,7 @@ class Disciple_Tools_Auto_Assignment_API {
                 }
             }
 
+            // Locations
             if ( $enforce_location ) {
                 if ( isset( $multiplier['best_location_match'], $contact['location_grid'] ) && is_array( $contact['location_grid'] ) ) {
                     if ( self::location_match( $multiplier['best_location_match'], $contact['location_grid'] ) ) {
@@ -216,6 +248,7 @@ class Disciple_Tools_Auto_Assignment_API {
                 }
             }
 
+            // Languages
             if ( $enforce_language ) {
                 if ( isset( $multiplier['languages'], $contact['languages'] ) && is_array( $multiplier['languages'] ) && is_array( $contact['languages'] ) ) {
                     if ( self::language_match( $multiplier['languages'], $contact['languages'] ) ) {
@@ -223,6 +256,20 @@ class Disciple_Tools_Auto_Assignment_API {
                     }
                 }
             }
+
+            // Assigned To Count
+            if ( isset( $multiplier['assigned_to_count'] ) ) {
+                $weight += self::apply_weights_for_assigned_to_counts( $multiplier['assigned_to_count'], $ranked_assigned_to_counts );
+            }
+
+            // User Status
+            $weight += self::apply_weights_for_status( $multiplier['user_status'], [ 'active' ], self::$weights_user_status );
+
+            // Workload Status
+            $weight += self::apply_weights_for_status( $multiplier['workload_status'], [ 'active' ], self::$weights_workload_status );
+
+            // Last Assignment
+            $weight += self::apply_weights_for_last_assigned( $multiplier['last_assigned'] );
 
             // Add to pre-sorted ranked array
             $ranked_multipliers[] = [
@@ -242,6 +289,27 @@ class Disciple_Tools_Auto_Assignment_API {
         } );
 
         return $ranked_multipliers;
+    }
+
+    private static function rank_assigned_to_counts( $multipliers ): array {
+        $ranked_assigned_to_counts = [];
+        foreach ( $multipliers ?? [] as $multiplier ) {
+            if ( ! empty( $multiplier['assigned_to_count'] ) ) {
+                $ranked_assigned_to_counts[] = $multiplier['assigned_to_count'];
+            }
+        }
+
+        // Sort ranked array by descending count values
+        usort( $ranked_assigned_to_counts, function ( $a, $b ) {
+            if ( $a === $b ) {
+                return 0;
+
+            } else {
+                return ( $a > $b ) ? - 1 : 1;
+            }
+        } );
+
+        return $ranked_assigned_to_counts;
     }
 
     private static function location_match( $key, $locations ): bool {
@@ -266,5 +334,32 @@ class Disciple_Tools_Auto_Assignment_API {
         }
 
         return $matched;
+    }
+
+    private static function apply_weights_for_assigned_to_counts( $assigned_to_count, $ranked_assigned_to_counts ): int {
+        $weight = array_search( $assigned_to_count, $ranked_assigned_to_counts );
+
+        return ( $weight !== false ) ? $weight : 0;
+    }
+
+    private static function apply_weights_for_status( $status, $keys, $weight ): int {
+        return ( empty( $status ) || in_array( strtolower( trim( $status ) ), $keys ) ) ? $weight : 0;
+    }
+
+    private static function apply_weights_for_last_assigned( $last_assigned ): float {
+        if ( $last_assigned === 0 ) {
+            return 0;
+        }
+
+        $elapsed_days = ( time() - $last_assigned ) / 86400; // secs-in-day
+
+        // Normalize....
+        $min = 0; // min-days
+        $max = 365; // max-days
+
+        $normalized = ( $elapsed_days - $min ) / ( $max - $min );
+        $weight     = 1 - $normalized; // fewer days to have larger weights!
+
+        return $weight;
     }
 }

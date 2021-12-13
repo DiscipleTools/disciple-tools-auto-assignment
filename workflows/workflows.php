@@ -141,17 +141,23 @@ class Disciple_Tools_Auto_Assignment_Workflows {
         }
     }
 
-    private function sources_match( $sources ): bool {
+    private function sources_match( $post_sources ): bool {
+        $settings_config = json_decode( Disciple_Tools_Auto_Assignment_API::fetch_option( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings ), true );
+
+        // All sources to be supported by default?
+        if ( ! empty( $settings_config ) && isset( $settings_config['support_all_sources'] ) && json_decode( $settings_config['support_all_sources'] ) === true ) {
+            return true;
+        }
+
+        // Determine which sources are to be supported?
         $matched = false;
-        foreach ( $sources ?? [] as $source ) {
-            if ( in_array( strtolower( trim( $source ) ), [
-                'echo',
-                'mailchimp',
-                'web',
-                'facebook',
-                'twitter'
-            ] ) ) {
-                $matched = true;
+        if ( ! empty( $settings_config ) ) {
+            foreach ( $post_sources ?? [] as $post_source ) {
+                foreach ( $settings_config['sources'] ?? [] as $config_source ) {
+                    if ( strtolower( trim( $post_source ) ) === strtolower( trim( $config_source['key'] ) ) ) {
+                        $matched = true;
+                    }
+                }
             }
         }
 

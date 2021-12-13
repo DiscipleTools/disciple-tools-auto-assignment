@@ -76,6 +76,24 @@ class Disciple_Tools_Auto_Assignment_Tab_General {
             </tbody>
         </table>
         <br>
+        <!-- End Box -->
+
+        <!-- Box -->
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th>Sources</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <?php $this->main_column_sources(); ?>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <br>
         <span style="float:left; display: none; font-weight: bold;" id="aa_general_main_col_msg"></span>
         <!-- End Box -->
         <?php
@@ -135,6 +153,56 @@ class Disciple_Tools_Auto_Assignment_Tab_General {
         <br>
         <span style="float:right;">
             <button type="submit" id="aa_general_main_col_settings_update_but"
+                    class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button>
+        </span>
+
+        <?php
+    }
+
+    private function main_column_sources() {
+        ?>
+        <table class="widefat striped">
+            <thead>
+            <tr>
+                <th>
+                    <select style="min-width: 90%;" id="aa_general_main_col_sources_current_list_select">
+                        <option disabled selected value>-- select sources to be processed --</option>
+                        <option value="all">All Sources</option>
+
+                        <?php
+                        $field_settings = DT_Posts::get_post_field_settings( 'contacts' );
+                        foreach ( $field_settings['sources']['default'] ?? [] as $source ) {
+                            echo '<option value="' . esc_attr( $source['key'] ) . '">' . esc_attr( $source['label'] ) . '</option>';
+                        }
+                        ?>
+
+                    </select>
+                </th>
+                <th>
+                    <span style="float:right;">
+                        <button id="aa_general_main_col_sources_current_list_select_add" type="submit"
+                                class="button float-right"><?php esc_html_e( "Add", 'disciple_tools' ) ?></button>
+                    </span>
+                </th>
+            </tr>
+            </thead>
+        </table>
+        <br>
+
+        <table class="widefat striped" id="aa_general_main_col_sources_table">
+            <thead>
+            <tr>
+                <th>Key</th>
+                <th>Label</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br>
+
+        <span style="float:right;">
+            <button type="submit" id="aa_general_main_col_sources_update_but"
                     class="button float-right"><?php esc_html_e( "Update", 'disciple_tools' ) ?></button>
         </span>
 

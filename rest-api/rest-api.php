@@ -78,7 +78,7 @@ class Disciple_Tools_Auto_Assignment_Endpoints {
             switch ( $params['action'] ) {
                 case 'general':
                     $response['has_settings'] = Disciple_Tools_Auto_Assignment_API::option_exists( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings );
-                    $response['settings']     = Disciple_Tools_Auto_Assignment_API::fetch_option( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings );
+                    $response['settings']     = json_decode( Disciple_Tools_Auto_Assignment_API::fetch_option( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings ) );
 
                     $response['success'] = true;
                     break;
