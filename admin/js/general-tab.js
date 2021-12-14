@@ -7,6 +7,10 @@ jQuery(function ($) {
     load_options();
   });
 
+  $(document).on('click', '.auto-assign-docs', function (evt) {
+    handle_docs_request($(evt.currentTarget).data('title'), $(evt.currentTarget).data('content'));
+  });
+
   $(document).on('click', '#aa_general_main_col_settings_update_but', function () {
     save_options();
   });
@@ -30,6 +34,15 @@ jQuery(function ($) {
   /**
    * HELPER FUNCTIONS
    */
+  function handle_docs_request(title_div, content_div) {
+    $('#aa_right_docs_section').fadeOut('fast', function () {
+      $('#aa_right_docs_title').html($('#' + title_div).html());
+      $('#aa_right_docs_content').html($('#' + content_div).html());
+
+      $('#aa_right_docs_section').fadeIn('fast');
+    });
+  }
+
   function load_options() {
     let msg_ele = $('#aa_general_main_col_msg');
     msg_ele.fadeOut('fast');

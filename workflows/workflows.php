@@ -142,9 +142,13 @@ class Disciple_Tools_Auto_Assignment_Workflows {
     }
 
     private function sources_match( $post_sources ): bool {
-        $settings_config = json_decode( Disciple_Tools_Auto_Assignment_API::fetch_option( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings ), true );
+        // Automated agents only!
+        if ( get_current_user_id() !== 0 ) {
+            return false;
+        }
 
         // All sources to be supported by default?
+        $settings_config = json_decode( Disciple_Tools_Auto_Assignment_API::fetch_option( Disciple_Tools_Auto_Assignment_API::$option_dt_auto_assign_general_settings ), true );
         if ( ! empty( $settings_config ) && isset( $settings_config['support_all_sources'] ) && json_decode( $settings_config['support_all_sources'] ) === true ) {
             return true;
         }

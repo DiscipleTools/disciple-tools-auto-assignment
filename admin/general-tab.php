@@ -46,7 +46,7 @@ class Disciple_Tools_Auto_Assignment_Tab_General {
                     <div id="postbox-container-1" class="postbox-container">
                         <!-- Right Column -->
 
-                        <?php /* $this->right_column() */ ?>
+                        <?php $this->right_column() ?>
 
                         <!-- End Right Column -->
                     </div><!-- postbox-container 1 -->
@@ -82,7 +82,11 @@ class Disciple_Tools_Auto_Assignment_Tab_General {
         <table class="widefat striped">
             <thead>
             <tr>
-                <th>Sources</th>
+                <th>
+                    Sources [<a href="#" class="auto-assign-docs"
+                                data-title="aa_right_docs_sources_title"
+                                data-content="aa_right_docs_sources_content">&#63;</a>]
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -102,48 +106,65 @@ class Disciple_Tools_Auto_Assignment_Tab_General {
     public function right_column() {
         ?>
         <!-- Box -->
-        <table class="widefat striped">
+        <table style="display: none;" id="aa_right_docs_section" class="widefat striped">
             <thead>
             <tr>
-                <th>Information</th>
+                <th id="aa_right_docs_title"></th>
             </tr>
             </thead>
             <tbody>
             <tr>
-                <td>
-                    Content
-                </td>
+                <td id="aa_right_docs_content"></td>
             </tr>
             </tbody>
         </table>
         <br>
         <!-- End Box -->
         <?php
+
+        // Include helper documentation
+        include 'general-tab-docs.php';
     }
 
     private function main_column_settings() {
         ?>
         <table class="widefat striped">
             <tr>
-                <td style="vertical-align: middle;">Auto Assign Minors?</td>
+                <td style="vertical-align: middle;">
+                    Auto Assign Minors? [<a href="#" class="auto-assign-docs"
+                                            data-title="aa_right_docs_auto_assign_minors_title"
+                                            data-content="aa_right_docs_auto_assign_minors_content">&#63;</a>]
+                </td>
                 <td>
                     <input type="checkbox" id="aa_general_main_col_settings_auto_assign_minors"/>
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align: middle;">Enforce Match On Gender?</td>
+                <td style="vertical-align: middle;">
+                    Enforce Match On Gender? [<a href="#" class="auto-assign-docs"
+                                                 data-title="aa_right_docs_enforce_gender_title"
+                                                 data-content="aa_right_docs_enforce_gender_content">&#63;</a>]
+                </td>
                 <td>
                     <input type="checkbox" id="aa_general_main_col_settings_enforce_match_on_gender"/>
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align: middle;">Enforce Match On Location?</td>
+                <td style="vertical-align: middle;">
+                    Enforce Match On Location? [<a href="#" class="auto-assign-docs"
+                                                   data-title="aa_right_docs_enforce_location_title"
+                                                   data-content="aa_right_docs_enforce_location_content">&#63;</a>]
+                </td>
                 <td>
                     <input type="checkbox" id="aa_general_main_col_settings_enforce_match_on_location"/>
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align: middle;">Enforce Match On Language?</td>
+                <td style="vertical-align: middle;">
+                    Enforce Match On Language? [<a href="#" class="auto-assign-docs"
+                                                   data-title="aa_right_docs_enforce_language_title"
+                                                   data-content="aa_right_docs_enforce_language_content">&#63;</a>]
+                </td>
                 <td>
                     <input type="checkbox" id="aa_general_main_col_settings_enforce_match_on_language"/>
                 </td>

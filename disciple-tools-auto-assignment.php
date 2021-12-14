@@ -93,54 +93,12 @@ class Disciple_Tools_Auto_Assignment {
         }
 
         /**
-         * @todo Decide if you want to create a new post type
-         * To remove: delete the line below and remove the folder named /post-type
-         */
-        require_once( 'post-type/loader.php' ); // add starter post type extension to Disciple.Tools system
-
-        /**
-         * @todo Decide if you want to create a custom site-to-site link
-         * To remove: delete the line below and remove the folder named /site-link
-         */
-        require_once( 'site-link/custom-site-to-site-links.php' ); // add site to site link class and capabilities
-
-        /**
-         * @todo Decide if you want to add new charts to the metrics section
-         * To remove: delete the line below and remove the folder named /charts
-         */
-        if ( strpos( dt_get_url_path(), 'metrics' ) !== false || ( $is_rest && strpos( dt_get_url_path(), 'disciple-tools-auto-assignment-metrics' ) !== false ) ){
-            require_once( 'charts/charts-loader.php' );  // add custom charts to the metrics area
-        }
-
-        /**
-         * @todo Decide if you want to add a custom tile or settings page tile
-         * To remove: delete the lines below and remove the folder named /tile
-         */
-        require_once( 'tile/custom-tile.php' ); // add custom tile
-        if ( 'settings' === dt_get_url_path() && ! $is_rest ) {
-            require_once( 'tile/settings-tile.php' ); // add custom settings page tile
-        }
-
-        /**
-         * @todo Decide if you want to create a magic link
-         * To remove: delete the line below and remove the folder named /magic-link
-         */
-        require_once( 'magic-link/magic-link-post-type.php' );
-        require_once( 'magic-link/magic-link-user-app.php' );
-
-        /**
          * @todo Decide if you want to add a custom admin page in the admin area
          * To remove: delete the 3 lines below and remove the folder named /admin
          */
         if ( is_admin() ) {
             require_once( 'admin/admin-menu-and-tabs.php' ); // adds starter admin page and section for plugin
         }
-
-        /**
-         * @todo Decide if you want to support localization of your plugin
-         * To remove: delete the line below and remove the folder named /languages
-         */
-        $this->i18n();
 
         /**
          * @todo Decide if you want to customize links for your plugin in the plugin admin area
@@ -335,21 +293,21 @@ if ( !function_exists( "dt_hook_ajax_notice_handler" ) ){
  * Also, see the instructions for version updating to understand the steps involved.
  * @see https://github.com/DiscipleTools/disciple-tools-version-control/wiki/How-to-Update-the-Starter-Plugin
  */
-//add_action( 'plugins_loaded', function (){
-//    if ( is_admin() && !( is_multisite() && class_exists( "DT_Multisite" ) ) || wp_doing_cron() ){
-//        // Check for plugin updates
-//        if ( ! class_exists( 'Puc_v4_Factory' ) ) {
-//            if ( file_exists( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' )){
-//                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
-//            }
-//        }
-//        if ( class_exists( 'Puc_v4_Factory' ) ){
-//            Puc_v4_Factory::buildUpdateChecker(
-//                'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-auto-assignment/master/version-control.json',
-//                __FILE__,
-//                'disciple-tools-auto-assignment'
-//            );
-//
-//        }
-//    }
-//} );
+add_action( 'plugins_loaded', function (){
+    if ( is_admin() && !( is_multisite() && class_exists( "DT_Multisite" ) ) || wp_doing_cron() ){
+        // Check for plugin updates
+        if ( ! class_exists( 'Puc_v4_Factory' ) ) {
+            if ( file_exists( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' )){
+                require( get_template_directory() . '/dt-core/libraries/plugin-update-checker/plugin-update-checker.php' );
+            }
+        }
+        if ( class_exists( 'Puc_v4_Factory' ) ){
+            Puc_v4_Factory::buildUpdateChecker(
+                'https://raw.githubusercontent.com/DiscipleTools/disciple-tools-auto-assignment/master/version-control.json',
+                __FILE__,
+                'disciple-tools-auto-assignment'
+            );
+
+        }
+    }
+} );

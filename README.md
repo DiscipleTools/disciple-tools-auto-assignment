@@ -1,41 +1,22 @@
 [![Build Status](https://travis-ci.com/DiscipleTools/disciple-tools-auto-assignment.svg?branch=master)](https://travis-ci.com/DiscipleTools/disciple-tools-auto-assignment)
 
-## Dev notes, delete me:
-This is a starter plugin to jumpstart your work with Disciple.Tools.
-Click the "Use this template" button above.
-See instructions for refactoring and getting started in the [wiki](https://github.com/DiscipleTools/disciple-tools-auto-assignment/wiki)
-See instructions for creating releases and publishing your plugin: [wiki](https://github.com/DiscipleTools/disciple-tools-auto-assignment/wiki)
-In order to display the banner correctly on the Disciple.Tools Community Plugins Site, don't change the 'Plugin Banner' text on line 12; only the URL.
-
-## readme format:
-
-![Plugin Banner](https://raw.githubusercontent.com/DiscipleTools/disciple-tools-auto-assignment/b30402d97895e3f911efcb47fb8f29ccd1eb92e5/documentation/banner.png)
-
 # Disciple.Tools - Auto Assignment
 
-Description Description Description Description Description Description Description
-Description Description Description Description Description Description Description
+Auto assignment of incoming contacts from various sources, with corresponding multiplier; based on highest relevance.
 
 ## Purpose
 
-Purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose
-Purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose
-
-Purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose
-Purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose purpose
+This plugin further assists the dispatcher by automating the assignment of contacts to the relevant multiplier, based on information such as location, age, gender and/or language.
 
 ## Usage
 
 #### Will Do
 
-- Item
-- Item
-- Item
+- Enable the cherry-picking of incoming sources to be processed.
+- Provides the ability to specify if under-age contacts are to be automatically assigned.
+- Provides the ability to specify areas (gender, location, age) of enforcement.
+- Auto-Assignment decision-making process is also dependent on other factors, such as a multiplier's availability and current workload.
 
-#### Will Not Do
-
-- Item
-- Item
 
 ## Requirements
 
@@ -54,8 +35,3 @@ in the [Discussions](https://github.com/DiscipleTools/disciple-tools-auto-assign
 code contributions are welcome using the [Pull Request](https://github.com/DiscipleTools/disciple-tools-auto-assignment/pulls)
 system for git. For a more details on contribution see the
 [contribution guidelines](https://github.com/DiscipleTools/disciple-tools-auto-assignment/blob/master/CONTRIBUTING.md).
-
-
-## Screenshots
-
-![screenshot](documentation/community/starter-banners/banner-blue-green.png)
