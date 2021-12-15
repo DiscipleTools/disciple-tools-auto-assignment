@@ -90,6 +90,14 @@ class Disciple_Tools_Auto_Assignment_API {
         $user_genders   = self::fetch_user_genders();
         $user_locations = self::fetch_user_locations( self::fetch_contact_location_ids( $contact ) );
 
+        // Obtain handle to current user.
+        $current_user = wp_get_current_user();
+
+        // Ensure automated agents have sufficient permissions.
+        if ( $current_user->ID === 0 ) {
+            $current_user->add_cap( "list_users" );
+        }
+
         foreach ( DT_User_Management::get_users( true ) ?? [] as $user ) {
             $roles = maybe_unserialize( $user['roles'] );
             if ( isset( $roles['multiplier'] ) ) {
@@ -127,6 +135,11 @@ class Disciple_Tools_Auto_Assignment_API {
 
                 $multipliers[] = $u;
             }
+        }
+
+        // Ensure to remove any previously assigned permissions.
+        if ( $current_user->ID === 0 ) {
+            $current_user->remove_cap( "list_users" );
         }
 
         return $multipliers;
