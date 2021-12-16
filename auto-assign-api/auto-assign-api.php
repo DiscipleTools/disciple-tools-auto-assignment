@@ -337,10 +337,10 @@ class Disciple_Tools_Auto_Assignment_API {
         return $ranked_multipliers;
     }
 
-    private static function rank_counts( $multipliers, $key ): array {
+    public static function rank_counts( $multipliers, $key ): array {
         $ranked_counts = [];
         foreach ( $multipliers ?? [] as $multiplier ) {
-            if ( ! empty( $multiplier[ $key ] ) ) {
+            if ( isset( $multiplier[ $key ] ) ) {
                 $ranked_counts[] = $multiplier[ $key ];
             }
         }
@@ -358,7 +358,7 @@ class Disciple_Tools_Auto_Assignment_API {
         return $ranked_counts;
     }
 
-    private static function location_match( $key, $locations ): bool {
+    public static function location_match( $key, $locations ): bool {
         $matched = false;
         foreach ( $locations ?? [] as $location ) {
             if ( isset( $location['label'] ) ) {
@@ -371,7 +371,7 @@ class Disciple_Tools_Auto_Assignment_API {
         return $matched;
     }
 
-    private static function language_match( $multiplier_lang, $contact_lang ): bool {
+    public static function language_match( $multiplier_lang, $contact_lang ): bool {
         $matched = false;
         foreach ( $multiplier_lang ?? [] as $lang ) {
             if ( in_array( $lang, $contact_lang ) ) {
@@ -382,7 +382,7 @@ class Disciple_Tools_Auto_Assignment_API {
         return $matched;
     }
 
-    private static function apply_weights_for_counts( $count, $ranked_counts ): float {
+    public static function apply_weights_for_counts( $count, $ranked_counts ): float {
         $idx = array_search( $count, $ranked_counts );
 
         if ( $idx === false ) {
@@ -399,7 +399,7 @@ class Disciple_Tools_Auto_Assignment_API {
         return $weight;
     }
 
-    private static function apply_weights_for_status( $status, $keys, $weight ): int {
+    public static function apply_weights_for_status( $status, $keys, $weight ): int {
         return ( empty( $status ) || in_array( strtolower( trim( $status ) ), $keys ) ) ? $weight : 0;
     }
 
