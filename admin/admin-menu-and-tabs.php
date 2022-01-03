@@ -2,23 +2,23 @@
 if ( ! defined( 'ABSPATH' ) ) { exit; } // Exit if accessed directly
 
 /**
- * Class Disciple_Tools_Plugin_Starter_Template_Menu
+ * Class Disciple_Tools_Auto_Assignment_Menu
  */
-class Disciple_Tools_Plugin_Starter_Template_Menu {
+class Disciple_Tools_Auto_Assignment_Menu {
 
-    public $token = 'disciple_tools_plugin_starter_template';
-    public $page_title = 'Plugin Starter Template';
+    public $token = 'disciple_tools_auto_assignment';
+    public $page_title = 'Auto Assignment';
 
     private static $_instance = null;
 
     /**
-     * Disciple_Tools_Plugin_Starter_Template_Menu Instance
+     * Disciple_Tools_Auto_Assignment_Menu Instance
      *
-     * Ensures only one instance of Disciple_Tools_Plugin_Starter_Template_Menu is loaded or can be loaded.
+     * Ensures only one instance of Disciple_Tools_Auto_Assignment_Menu is loaded or can be loaded.
      *
      * @since 0.1.0
      * @static
-     * @return Disciple_Tools_Plugin_Starter_Template_Menu instance
+     * @return Disciple_Tools_Auto_Assignment_Menu instance
      */
     public static function instance() {
         if ( is_null( self::$_instance ) ) {
@@ -73,21 +73,17 @@ class Disciple_Tools_Plugin_Starter_Template_Menu {
 
         ?>
         <div class="wrap">
-            <h2>Plugin Starter Template</h2>
+            <h2>DISCIPLE TOOLS : AUTO ASSIGNMENT</h2>
             <h2 class="nav-tab-wrapper">
                 <a href="<?php echo esc_attr( $link ) . 'general' ?>"
                    class="nav-tab <?php echo esc_html( ( $tab == 'general' || !isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">General</a>
-                <a href="<?php echo esc_attr( $link ) . 'second' ?>" class="nav-tab <?php echo esc_html( ( $tab == 'second' || !isset( $tab ) ) ? 'nav-tab-active' : '' ); ?>">Second</a>
             </h2>
 
             <?php
             switch ( $tab ) {
                 case "general":
-                    $object = new Disciple_Tools_Plugin_Starter_Template_Tab_General();
-                    $object->content();
-                    break;
-                case "second":
-                    $object = new Disciple_Tools_Plugin_Starter_Template_Tab_Second();
+                    require( 'general-tab.php' );
+                    $object = new Disciple_Tools_Auto_Assignment_Tab_General();
                     $object->content();
                     break;
                 default:
@@ -100,158 +96,5 @@ class Disciple_Tools_Plugin_Starter_Template_Menu {
         <?php
     }
 }
-Disciple_Tools_Plugin_Starter_Template_Menu::instance();
-
-/**
- * Class Disciple_Tools_Plugin_Starter_Template_Tab_General
- */
-class Disciple_Tools_Plugin_Starter_Template_Tab_General {
-    public function content() {
-        ?>
-        <div class="wrap">
-            <div id="poststuff">
-                <div id="post-body" class="metabox-holder columns-2">
-                    <div id="post-body-content">
-                        <!-- Main Column -->
-
-                        <?php $this->main_column() ?>
-
-                        <!-- End Main Column -->
-                    </div><!-- end post-body-content -->
-                    <div id="postbox-container-1" class="postbox-container">
-                        <!-- Right Column -->
-
-                        <?php $this->right_column() ?>
-
-                        <!-- End Right Column -->
-                    </div><!-- postbox-container 1 -->
-                    <div id="postbox-container-2" class="postbox-container">
-                    </div><!-- postbox-container 2 -->
-                </div><!-- post-body meta box container -->
-            </div><!--poststuff end -->
-        </div><!-- wrap end -->
-        <?php
-    }
-
-    public function main_column() {
-        ?>
-        <!-- Box -->
-        <table class="widefat striped">
-            <thead>
-                <tr>
-                    <th>Header</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Content
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <!-- End Box -->
-        <?php
-    }
-
-    public function right_column() {
-        ?>
-        <!-- Box -->
-        <table class="widefat striped">
-            <thead>
-                <tr>
-                    <th>Information</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    Content
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <br>
-        <!-- End Box -->
-        <?php
-    }
-}
-
-
-/**
- * Class Disciple_Tools_Plugin_Starter_Template_Tab_Second
- */
-class Disciple_Tools_Plugin_Starter_Template_Tab_Second {
-    public function content() {
-        ?>
-        <div class="wrap">
-            <div id="poststuff">
-                <div id="post-body" class="metabox-holder columns-2">
-                    <div id="post-body-content">
-                        <!-- Main Column -->
-
-                        <?php $this->main_column() ?>
-
-                        <!-- End Main Column -->
-                    </div><!-- end post-body-content -->
-                    <div id="postbox-container-1" class="postbox-container">
-                        <!-- Right Column -->
-
-                        <?php $this->right_column() ?>
-
-                        <!-- End Right Column -->
-                    </div><!-- postbox-container 1 -->
-                    <div id="postbox-container-2" class="postbox-container">
-                    </div><!-- postbox-container 2 -->
-                </div><!-- post-body meta box container -->
-            </div><!--poststuff end -->
-        </div><!-- wrap end -->
-        <?php
-    }
-
-    public function main_column() {
-        ?>
-        <!-- Box -->
-        <table class="widefat striped">
-            <thead>
-                <tr>
-                    <th>Header</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Content
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
-        <!-- End Box -->
-        <?php
-    }
-
-    public function right_column() {
-        ?>
-        <!-- Box -->
-        <table class="widefat striped">
-            <thead>
-                <tr>
-                    <th>Information</th>
-                </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    Content
-                </td>
-            </tr>
-            </tbody>
-        </table>
-        <br>
-        <!-- End Box -->
-        <?php
-    }
-}
+Disciple_Tools_Auto_Assignment_Menu::instance();
 
