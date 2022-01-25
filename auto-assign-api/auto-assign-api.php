@@ -131,7 +131,7 @@ class Disciple_Tools_Auto_Assignment_API {
                 $u['workload_status'] = $user['workload_status'] ?? '';
 
                 // Last Activity
-                $u['last_activity'] = $user['last_activity'];
+                $u['last_activity'] = $user['last_activity'] ?? '';
 
                 $multipliers[] = $u;
             }
