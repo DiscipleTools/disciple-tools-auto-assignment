@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.com/DiscipleTools/disciple-tools-auto-assignment.svg?branch=master)](https://travis-ci.com/DiscipleTools/disciple-tools-auto-assignment)
 
+![Plugin Banner](https://raw.githubusercontent.com/DiscipleTools/disciple-tools-auto-assignment/master/documentation/banner.png)
+
 # Disciple.Tools - Auto Assignment
 
 Auto assignment of incoming contacts from various sources, with corresponding multiplier; based on highest relevance.
