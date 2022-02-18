@@ -5,7 +5,7 @@
  * Description: Disciple.Tools - Auto Assignment is intended to assist the dispatcher by automating the assignment of contacts to the relevant multiplier, based on information such as location, age, gender and/or language.
  * Text Domain: disciple-tools-auto-assignment
  * Domain Path: /languages
- * Version:  0.1
+ * Version:  1.1
  * Author URI: https://github.com/DiscipleTools
  * GitHub Plugin URI: https://github.com/DiscipleTools/disciple-tools-auto-assignment
  * Requires at least: 4.7.0
