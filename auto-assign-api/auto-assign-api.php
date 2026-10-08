@@ -199,7 +199,7 @@ class Disciple_Tools_Auto_Assignment_API {
                     $match_location_ids = "( 1 )";
                 } else {
                     $match_location_ids = "( ";
-                    for ( $i = 0; $i <= ( (int) $location["level"] ); $i ++ ) {
+                    for ( $i = 0; $i <= ( (int) $location["level"] ); $i++ ) {
                         $levels[ $location[ "admin" . $i . "_grid_id" ] ] = [ "level" => $i ];
                         $match_location_ids                               .= $location[ "admin" . $i . "_grid_id" ] . ', ';
                     }

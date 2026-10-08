@@ -13,7 +13,6 @@ class Disciple_Tools_Auto_Assignment_Tab_General {
 
         // Load scripts and styles
         $this->process_scripts();
-
     }
 
     private function process_scripts() {
