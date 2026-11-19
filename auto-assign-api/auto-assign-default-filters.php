@@ -6,7 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_filter( 'dt_get_dispatch_list', 'dt_get_dispatch_list', 10, 3 );
 function dt_get_dispatch_list( $list, $post_type, $post_id ): array {
     $users = [];
-    $post = DT_Posts::get_post( $post_type, $post_id );
+    if ( ! is_string( $post_type ) || ! is_numeric( $post_id ) ) {
+        return $list;
+    }
+    $post = DT_Posts::get_post( $post_type, (int) $post_id );
 
     if ( ! empty( $list ) && ! empty( $post ) && ! is_wp_error( $post ) ) {
         $ranked_update_needed_counts = Disciple_Tools_Auto_Assignment_API::rank_counts( $list, 'update_needed' );

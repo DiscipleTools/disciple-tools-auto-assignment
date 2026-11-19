@@ -195,34 +195,36 @@ class Disciple_Tools_Auto_Assignment_API {
                 $location = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $wpdb->dt_location_grid WHERE grid_id = %s", esc_sql( $grid_id ) ), ARRAY_A );
                 $levels   = [];
 
-                if ( $grid_id === "1" ) {
-                    $match_location_ids = "( 1 )";
-                } else {
-                    $match_location_ids = "( ";
-                    for ( $i = 0; $i <= ( (int) $location["level"] ); $i++ ) {
-                        $levels[ $location[ "admin" . $i . "_grid_id" ] ] = [ "level" => $i ];
-                        $match_location_ids                               .= $location[ "admin" . $i . "_grid_id" ] . ', ';
-                    }
-                    $match_location_ids .= ')';
-
+                if ( empty( $location ) ) {
+                    continue;
                 }
 
-                $match_location_ids = str_replace( ', )', ' )', $match_location_ids );
+                if ( $grid_id === "1" ) {
+                    $match_location_ids = [ 1 ];
+                } else {
+                    $match_location_ids = [];
+                    for ( $i = 0; $i <= ( (int) $location["level"] ); $i++ ) {
+                        $levels[ $location[ "admin" . $i . "_grid_id" ] ] = [ "level" => $i ];
+                        $match_location_ids[]                             = (int) $location[ "admin" . $i . "_grid_id" ];
+                    }
+                }
+
+                $match_location_placeholders = implode( ', ', array_fill( 0, count( $match_location_ids ), '%d' ) );
                 //phpcs:disable
                 //already sanitized IN value
-                $location_names = $wpdb->get_results( "
+                $location_names = $wpdb->get_results( $wpdb->prepare( "
                     SELECT alt_name, grid_id
                     FROM $wpdb->dt_location_grid
-                    WHERE grid_id IN $match_location_ids
-                ", ARRAY_A );
+                    WHERE grid_id IN ( $match_location_placeholders )
+                ", $match_location_ids ), ARRAY_A );
 
                 //get users with the same location grid.
                 $users_in_location = $wpdb->get_results( $wpdb->prepare( "
                     SELECT user_id, meta_value as grid_id
                     FROM $wpdb->usermeta um
                     WHERE um.meta_key = %s
-                    AND um.meta_value IN $match_location_ids
-                ", "{$wpdb->prefix}location_grid" ), ARRAY_A );
+                    AND um.meta_value IN ( $match_location_placeholders )
+                ", array_merge( [ "{$wpdb->prefix}location_grid" ], $match_location_ids ) ), ARRAY_A );
                 //phpcs:enable
 
                 foreach ( $location_names as $l ) {
