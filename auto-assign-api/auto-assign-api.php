@@ -374,7 +374,7 @@ class Disciple_Tools_Auto_Assignment_API {
     public static function language_match( $multiplier_lang, $contact_lang ): bool {
         $matched = false;
         foreach ( $multiplier_lang ?? [] as $lang ) {
-            if ( in_array( $lang, $contact_lang ) ) {
+            if ( in_array( $lang, $contact_lang, true ) ) {
                 $matched = true;
             }
         }
