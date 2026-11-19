@@ -66,7 +66,7 @@ class Disciple_Tools_Auto_Assignment_API {
     }
 
     private static function is_minor( $contact ): bool {
-        return isset( $contact['age'] ) && $contact['age'] === '<19';
+        return ( $contact['age']['key'] ?? null ) === '<19';
     }
 
     private static function is_enforced( $settings, $setting_id ): bool {
