@@ -394,6 +394,10 @@ class Disciple_Tools_Auto_Assignment_API {
         $max = count( $ranked_counts );
         $val = $idx + 1; // Ignore zero array index offset!
 
+        if ( $max === $min ) {
+            return 0.0;
+        }
+
         $weight = ( $val - $min ) / ( $max - $min );
 
         return $weight;
